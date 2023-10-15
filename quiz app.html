@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        #quiz-container {
+            width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+        }
+        .choice {
+            padding: 10px;
+            margin: 5px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            background-color: #f4f4f4;
+            transition: background-color 0.3s;
+        }
+        .choice:hover {
+            background-color: #e0e0e0;
+        }
+
+        #home-button {
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+        }
+        @media (max-width: 480px) {
+            #quiz-container {
+                max-width: 100%;
+            }
+            .choice {
+                max-width: 100%;
+            }
+        }
+    </style>
+    <title>Quiz App</title>
+</head>
+<body>
+    <div id="quiz-container">
+        <div id="question-container">
+            <h1 id="question">Question 1</h1> 
+            <img id="question-image" src="photos/02.jpg" alt="Question 1 Image" style="max-width: 100%; height: auto;">
+        </div>
+        <div id="choices-container">
+            <div class="choice" onclick="checkAnswer(0)">Choice A</div>
+            <div class="choice" onclick="checkAnswer(1)">Choice B</div>
+            <div class="choice" onclick="checkAnswer(0)">Choice C</div>
+            <div class="choice" onclick="checkAnswer(0)">Choice D</div>
+        </div>
+        <div id="result-container">
+            <p id="result"></p>
+        </div>
+        <center>
+            <button id="home-button" style="display: none;" onclick="returnToHomePage()">Home</button>
+        </center>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "When and where was Jose Rizal born?",
+                image: "photos/02.jpg",
+                choices: ["A) 19 June 1861, Manila", "B) 12 June 1863, Calamba", "C) 30 June 1865, Dapitan", "D) 7 July 1862, Cebu"],
+                correct: 1
+            },
+            
+            {
+                question: "What is the title of Jose Rizal's most famous novel?",
+                image: "photos/03.jpg",
+                choices: ["A) Noli Me Tangere", "B) El Filibusterismo", "C) La Solidaridad", "D) Rizal's Reflections"],
+                correct: 0
+            },
+
+            {
+                question: "In which country did Jose Rizal write his two novels and other influential writings?",
+                image: "photos/04.jpg",
+                choices: ["A) Philippines", "B) Spain", "C) United States", "D) Cuba"],
+                correct: 0
+            },
+
+            {
+                question: "What is the name of Jose Rizal's first love and inspiration for his character Maria Clara?",
+                image: "photos/05.jpg",
+                choices: ["A) Segunda Katigbak", "B) Leonor Rivera", "C) Josephine Bracken", "D) Consuelo Ortiga"],
+                correct: 1
+            },
+
+            {
+                question: "Jose Rizal is often referred to as the 'Pride of the Malay Race.' What does 'Rizal' mean in Tagalog?",
+                image: "photos/06.jpg",
+                choices: ["A) Hero", "B) Nationalist", "C) Martyr", "D) Liberator"],
+                correct: 0
+            },
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+
+        function displayQuestion() {
+            const questionText = document.getElementById("question");
+            const questionImage = document.getElementById("question-image");
+            const choicesContainer = document.getElementById("choices-container");
+            
+            questionText.textContent = questions[currentQuestion].question;
+            questionImage.src = questions[currentQuestion].image;
+            choicesContainer.innerHTML = "";
+
+            questions[currentQuestion].choices.forEach((choice, index) => {
+                const choiceElement = document.createElement("div");
+                choiceElement.classList.add("choice");
+                choiceElement.textContent = choice;
+                choiceElement.addEventListener("click", () => checkAnswer(index));
+                choicesContainer.appendChild(choiceElement);
+            });
+        }
+
+        function checkAnswer(selectedIndex) {
+            if (selectedIndex === questions[currentQuestion].correct) {
+                score++;
+            }
+
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                displayQuestion();
+            } else {
+                displayResult();
+            }
+        }
+
+        function displayResult() {
+            const resultContainer = document.getElementById("result-container");
+            const questionContainer = document.getElementById("question-container");
+            const choicesContainer = document.getElementById("choices-container");
+            const homeButton = document.getElementById("home-button");
+            
+            questionContainer.style.display = "none";
+            choicesContainer.style.display = "none";
+            resultContainer.innerHTML = `<p>Your score: ${score} out of ${questions.length}</p>`;
+            homeButton.style.display = "block";
+        }
+
+        function returnToHomePage() {
+            // Change this to the appropriate URL for your home page.
+            window.location.href = "index.html";
+        }
+
+        displayQuestion();
+    </script>
+</body>
+</html>
+
